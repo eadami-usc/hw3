@@ -120,16 +120,14 @@ void Heap<T, PComparator>::pop()
   }
   swap(0, heap_.size() - 1);
   heap_.pop_back();
-  int currIndex = 0;
+  size_t currIndex = 0;
   while (currIndex < heap_.size()) {
-    int leftIndex = (currIndex * m_) + 1;
-    int rightIndex = (currIndex * m_) + 2;
-    int bestIndex = currIndex;
-    if (leftIndex < heap_.size() && comp_(heap_[leftIndex], heap_[bestIndex])) {
-      bestIndex = leftIndex;
-    }
-    if (rightIndex < heap_.size() && comp_(heap_[rightIndex], heap_[bestIndex])) {
-      bestIndex = rightIndex;
+    size_t bestIndex = currIndex;
+    for (int i = 1; i <= m_; i++) {
+      size_t childIndex = (currIndex * m_) + i;
+      if (childIndex < heap_.size() && comp_(heap_[childIndex], heap_[bestIndex])) {
+        bestIndex = childIndex;
+      }
     }
     if (bestIndex == currIndex) {
       break;
